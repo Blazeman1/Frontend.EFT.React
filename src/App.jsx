@@ -17,6 +17,8 @@ import { irASeccion } from './utils/dom.js'
  *
  *   videojuegos (useVideojuegos) -> Navbar (total), Hero (resumen), Catalogo (tarjetas)
  *   categoriaActiva, busqueda     -> Hero (atajos de categoría) y Catalogo (filtros + lista)
+ *   juegoConsultado               -> Catalogo lo define con "Consultar" y Contacto lo usa
+ *                                    para precargar el mensaje del formulario
  *
  * Por eso un cambio en una sección se refleja en las demás: al filtrar se
  * actualiza la lista; al agregar o eliminar un juego cambian el contador de la
@@ -26,6 +28,7 @@ function App() {
   const { videojuegos, cargando, error, recargar, agregar, eliminar } = useVideojuegos()
   const [categoriaActiva, setCategoriaActiva] = useState('Todas')
   const [busqueda, setBusqueda] = useState('')
+  const [juegoConsultado, setJuegoConsultado] = useState(null)
 
   // Cantidad de videojuegos por categoría (para los botones de filtro).
   const categorias = useMemo(
@@ -78,6 +81,12 @@ function App() {
     setBusqueda('')
   }
 
+  /** "Consultar" en una tarjeta: guarda el juego y lleva al formulario de contacto. */
+  function manejarConsultar(juego) {
+    setJuegoConsultado(juego)
+    irASeccion('contacto')
+  }
+
   return (
     <>
       <Navbar seccionActiva="inicio" totalVideojuegos={videojuegos.length} cargando={cargando} />
@@ -99,9 +108,10 @@ function App() {
           onAgregar={manejarAgregar}
           onEliminar={eliminar}
           onRestablecer={manejarRestablecer}
+          onConsultar={manejarConsultar}
         />
 
-        <Contacto />
+        <Contacto juegoConsultado={juegoConsultado} onQuitarConsulta={() => setJuegoConsultado(null)} />
       </main>
 
       <Footer />

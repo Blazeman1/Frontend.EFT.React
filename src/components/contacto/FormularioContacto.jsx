@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CampoFormulario from '../comunes/CampoFormulario.jsx'
 import useFormulario from '../../hooks/useFormulario.js'
 import { LIMITES, validarContacto } from '../../utils/validaciones.js'
 import { enfocarCampo } from '../../utils/dom.js'
+import { formatearPrecio } from '../../utils/formato.js'
 
 const VALORES_INICIALES = { nombre: '', email: '', mensaje: '' }
 const ORDEN_CAMPOS = ['nombre', 'email', 'mensaje']
@@ -15,14 +16,30 @@ const DEMORA_ENVIO_MS = 900
  * si falta información o está mal ingresada, muestra el error bajo cada campo,
  * un resumen arriba y lleva el foco al primer campo con problemas.
  *
+ * Props:
+ *   juegoConsultado  -> si el usuario pulsó "Consultar" en una tarjeta, llega
+ *                       aquí desde App y se usa para precargar el mensaje
+ *   onQuitarConsulta -> limpia esa consulta en App
+ *
  * El envío es simulado (no hay servidor): espera un momento y muestra la
  * confirmación.
  */
-function FormularioContacto() {
+function FormularioContacto({ juegoConsultado, onQuitarConsulta }) {
   const formulario = useFormulario(VALORES_INICIALES, validarContacto)
-  const { valores, errores, manejarBlur, errorVisible, esCampoValido } = formulario
+  const { valores, errores, manejarBlur, errorVisible, esCampoValido, asignarValor } = formulario
   const [estadoEnvio, setEstadoEnvio] = useState('inactivo') // 'inactivo' | 'enviando' | 'enviado'
   const [ultimoEnvio, setUltimoEnvio] = useState(null)
+
+  // Efecto: cuando llega una consulta desde el catálogo, precarga el mensaje.
+  // Depende solo de juegoConsultado: se ejecuta cada vez que se consulta otro juego.
+  useEffect(() => {
+    if (!juegoConsultado) return
+    asignarValor(
+      'mensaje',
+      `Hola, quisiera saber si tienen disponible "${juegoConsultado.nombre}" (${juegoConsultado.categoria}, ${formatearPrecio(juegoConsultado.precio)}).`,
+    )
+    setEstadoEnvio('inactivo')
+  }, [juegoConsultado])
 
   function manejarCambio(evento) {
     if (estadoEnvio === 'enviado') setEstadoEnvio('inactivo')
@@ -43,6 +60,7 @@ function FormularioContacto() {
     setUltimoEnvio({ nombre: valores.nombre.trim(), email: valores.email.trim() })
     setEstadoEnvio('enviado')
     formulario.reiniciar()
+    onQuitarConsulta()
   }
 
   const propsCampo = (campo) => ({
@@ -61,7 +79,7 @@ function FormularioContacto() {
 
   return (
     <form noValidate onSubmit={manejarEnvio} aria-describedby="notaCampos" data-testid="formulario-contacto">
-      {/* Mensajes condicionales: éxito y resumen de errores */}
+      {/* Mensajes condicionales: éxito, resumen de errores y consulta precargada */}
       {estadoEnvio === 'enviado' && ultimoEnvio && (
         <div className="alert alert-success d-flex justify-content-between align-items-start gap-2" role="status" data-testid="contacto-exito">
           <div>
@@ -75,6 +93,17 @@ function FormularioContacto() {
         <div className="alert alert-danger py-2" role="alert" data-testid="contacto-errores">
           No pudimos enviar el formulario: revisa{' '}
           {cantidadErrores === 1 ? 'el campo marcado' : `los ${cantidadErrores} campos marcados`}.
+        </div>
+      )}
+
+      {juegoConsultado && (
+        <div className="alert alert-info py-2 d-flex justify-content-between align-items-center gap-2" data-testid="consulta-activa">
+          <span>
+            Consulta sobre: <strong>{juegoConsultado.nombre}</strong>
+          </span>
+          <button type="button" className="btn btn-sm btn-outline-info" onClick={onQuitarConsulta}>
+            Quitar
+          </button>
         </div>
       )}
 

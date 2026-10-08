@@ -11,10 +11,11 @@ const DATOS_CONTACTO = [
 /**
  * Contacto — sección de contacto (<section id="contacto">).
  *
- * Contiene el formulario de contacto y un <aside> con los datos de la tienda,
- * que usa Flexbox para listar la información.
+ * Recibe juegoConsultado desde App y lo pasa a FormularioContacto: así el
+ * botón "Consultar" de una tarjeta del catálogo (otra sección) llena el
+ * mensaje automáticamente. El <aside> usa Flexbox para listar los datos.
  */
-function Contacto() {
+function Contacto({ juegoConsultado, onQuitarConsulta }) {
   return (
     <section id="contacto" className="seccion py-5" aria-labelledby="tituloContacto">
       <div className="container">
@@ -27,7 +28,7 @@ function Contacto() {
           <div className="col-12 col-lg-7">
             <div className="card h-100">
               <div className="card-body p-4">
-                <FormularioContacto />
+                <FormularioContacto juegoConsultado={juegoConsultado} onQuitarConsulta={onQuitarConsulta} />
               </div>
             </div>
           </div>
