@@ -1,6 +1,8 @@
 /* =====================================================================
    GameZone — Estilos propios (EFT PFY2201)
    Se cargan DESPUÉS de Bootstrap 5 (ver main.jsx) para personalizarlo.
+   Layout: Bootstrap (container/row/col) + FLEXBOX (hero, filtros, contacto)
+   + CSS GRID (grilla de tarjetas del catálogo).
    ===================================================================== */
 
 /* ---------- Variables de marca ---------- */
@@ -10,8 +12,231 @@
   --gz-acento: #ffc107;
   --gz-fondo: #14161b;
   --gz-superficie: #1d2027;
+  --gz-altura-navbar: 64px;
+}
+
+html {
+  /* Al navegar con los enlaces (#catalogo, #contacto), deja espacio para la navbar fija */
+  scroll-padding-top: calc(var(--gz-altura-navbar) + 8px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
   background-color: var(--gz-fondo);
+}
+
+/* ---------- Navbar ---------- */
+.bg-gz {
+  background: linear-gradient(90deg, var(--gz-primario-oscuro), var(--gz-primario));
+}
+
+.logo-gz {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background: var(--gz-acento);
+  color: var(--gz-primario-oscuro);
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+
+.navbar .nav-link.active {
+  color: var(--gz-acento);
+  box-shadow: inset 0 -2px 0 var(--gz-acento);
+}
+
+/* ---------- Hero (Flexbox) ---------- */
+.hero {
+  background:
+    radial-gradient(circle at 85% 20%, rgba(111, 26, 184, 0.45), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgba(255, 193, 7, 0.12), transparent 40%);
+}
+
+.hero-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.hero-texto {
+  flex: 1 1 60%;
+}
+
+.hero-resumen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0;
+  flex: 1 1 40%;
+  align-content: center;
+}
+
+.hero-dato {
+  flex: 1 1 140px;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  background: rgba(29, 32, 39, 0.85);
+}
+
+.hero-dato dt {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--bs-secondary-color);
+}
+
+.hero-dato dd {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gz-acento);
+}
+
+@media (min-width: 992px) {
+  .hero-contenido {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* ---------- Secciones ---------- */
+.seccion:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* ---------- Barra de filtros (Flexbox) ---------- */
+.barra-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.barra-filtros > :first-child {
+  flex: 1 1 420px;
+}
+
+.barra-filtros__busqueda {
+  flex: 1 1 220px;
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .barra-filtros__busqueda {
+    max-width: 300px;
+  }
+}
+
+/* ---------- Grilla del catálogo (CSS Grid) ----------
+   auto-fill + minmax: el navegador calcula cuántas columnas caben.
+   1 columna en móvil, 2 en tablet, 3 o 4 en escritorio, sin media queries. */
+.grilla-juegos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  gap: 1.25rem;
+}
+
+/* ---------- Tarjeta de videojuego ---------- */
+.tarjeta-juego {
+  overflow: hidden;
+  background-color: var(--gz-superficie);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tarjeta-juego:hover,
+.tarjeta-juego:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.4);
+}
+
+.tarjeta-juego__imagen {
+  position: relative;
+  aspect-ratio: 7 / 5;
+  background: var(--gz-primario-oscuro);
+}
+
+.tarjeta-juego__imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tarjeta-juego__categoria {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+}
+
+.tarjeta-juego__nuevo {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+}
+
+.tarjeta-nueva {
+  border-color: var(--bs-success);
+  animation: aparecer 0.4s ease-out;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.precio {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--gz-acento);
+}
+
+.esqueleto-imagen {
+  aspect-ratio: 7 / 5;
+  height: auto;
+}
+
+.estado-vacio {
+  padding: 3rem 1rem;
+  text-align: center;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  color: var(--bs-secondary-color);
+}
+
+/* ---------- Panel de administración ---------- */
+.panel-admin {
+  border-color: rgba(25, 135, 84, 0.6);
+}
+
+.panel-admin .card-header {
+  background: rgba(25, 135, 84, 0.15);
+}
+
+/* ---------- Contacto (Flexbox) ---------- */
+.lista-contacto li {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Footer ---------- */
+.pie-pagina {
+  background-color: #0e0f13;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
