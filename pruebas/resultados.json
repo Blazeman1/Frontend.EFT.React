@@ -1,0 +1,188 @@
+{
+  "pruebas": [
+    "Esqueleto de carga visible al inicio",
+    "Insignia del navbar muestra '…' mientras carga",
+    "12 tarjetas generadas dinámicamente",
+    "Etiquetas semánticas header/nav/main/section/footer/article/aside",
+    "CSS Grid en el catálogo y Flexbox en hero/filtros",
+    "Resumen de inicio: 12 juegos, 6 categorías, desde $19.990",
+    "Navbar muestra 12 videojuegos",
+    "Tarjeta con imagen, nombre, precio y descripción",
+    "Todas las imágenes cargan",
+    "Filtro RPG muestra 2 juegos",
+    "Contador 'Mostrando 2 de 12'",
+    "Botón activo con aria-pressed",
+    "Búsqueda 'galaxia' -> 1",
+    "Búsqueda sin tildes 'cronicas' encuentra 'Crónicas de Atacama'",
+    "Sin resultados muestra mensaje",
+    "'Ver todos' limpia filtros",
+    "Atajo de inicio 'Deportes' filtra el catálogo",
+    "Atajo desplaza la página hasta el catálogo",
+    "Modo admin muestra el formulario",
+    "Envío vacío: 4 errores (imagen es opcional)",
+    "Foco en el primer campo con error",
+    "Campos marcados con is-invalid",
+    "Nombre repetido detectado",
+    "Precio con punto rechazado",
+    "URL de imagen inválida rechazada",
+    "Vista previa en tiempo real (reutiliza TarjetaVideojuego)",
+    "Juego agregado: 13 tarjetas",
+    "El nuevo aparece primero con insignia 'Nuevo'",
+    "Imagen que no carga se reemplaza por la imagen por defecto (onError)",
+    "Navbar actualizado a 13 (props entre secciones)",
+    "Resumen de inicio actualizado a 13",
+    "Conteo de categoría Aventura actualizado a 3",
+    "Aviso de éxito",
+    "Formulario se limpia después de agregar",
+    "Eliminar pide confirmación",
+    "Juego eliminado: 12 tarjetas y sin 'Reinos Olvidados'",
+    "Aviso de eliminación",
+    "Categoría vacía muestra mensaje",
+    "Atajo 'Deportes' deshabilitado al quedar sin juegos",
+    "Restablecer recupera los 12 originales",
+    "Sin modo admin no hay botones Eliminar",
+    "Contacto vacío: resumen de 3 errores",
+    "Foco en el nombre",
+    "Mensajes de error específicos",
+    "Nombre con números rechazado",
+    "Campos válidos con is-valid",
+    "Contador de caracteres",
+    "Estado 'Enviando...' con botón deshabilitado",
+    "Confirmación personalizada",
+    "Formulario reiniciado",
+    "'Consultar' precarga el mensaje con el juego",
+    "Indicador de consulta activa",
+    "Se desplaza a Contacto",
+    "Navbar resalta 'Contacto' (IntersectionObserver)",
+    "'Quitar' elimina la consulta",
+    "?error muestra alerta con Reintentar",
+    "Reintentar recupera el catálogo",
+    "320px: sin scroll horizontal, menú y filtro funcionando (1 col.)",
+    "360px: sin scroll horizontal, menú y filtro funcionando (1 col.)",
+    "375px: sin scroll horizontal, menú y filtro funcionando (1 col.)",
+    "414px: sin scroll horizontal, menú y filtro funcionando (1 col.)",
+    "768px: sin scroll horizontal, menú y filtro funcionando (2 col.)",
+    "1024px: sin scroll horizontal, menú y filtro funcionando (3 col.)",
+    "1366px: sin scroll horizontal, menú y filtro funcionando (4 col.)",
+    "1920px: sin scroll horizontal, menú y filtro funcionando (4 col.)",
+    "iPhone SE: carga, sin scroll horizontal e interacción táctil",
+    "iPhone 13: carga, sin scroll horizontal e interacción táctil",
+    "Pixel 7: carga, sin scroll horizontal e interacción táctil",
+    "Galaxy S9+: carga, sin scroll horizontal e interacción táctil",
+    "iPad (gen 7): carga, sin scroll horizontal e interacción táctil",
+    "iPad Pro 11 landscape: carga, sin scroll horizontal e interacción táctil",
+    "Consola sin errores en todas las pruebas"
+  ],
+  "anchos": [
+    {
+      "ancho": 320,
+      "columnas": 1,
+      "menu_hamburguesa": true,
+      "filtro": "select",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    },
+    {
+      "ancho": 360,
+      "columnas": 1,
+      "menu_hamburguesa": true,
+      "filtro": "select",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    },
+    {
+      "ancho": 375,
+      "columnas": 1,
+      "menu_hamburguesa": true,
+      "filtro": "select",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    },
+    {
+      "ancho": 414,
+      "columnas": 1,
+      "menu_hamburguesa": true,
+      "filtro": "select",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    },
+    {
+      "ancho": 768,
+      "columnas": 2,
+      "menu_hamburguesa": false,
+      "filtro": "botones",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    },
+    {
+      "ancho": 1024,
+      "columnas": 3,
+      "menu_hamburguesa": false,
+      "filtro": "botones",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    },
+    {
+      "ancho": 1366,
+      "columnas": 4,
+      "menu_hamburguesa": false,
+      "filtro": "botones",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    },
+    {
+      "ancho": 1920,
+      "columnas": 4,
+      "menu_hamburguesa": false,
+      "filtro": "botones",
+      "sin_scroll_horizontal": true,
+      "menu_ok": true,
+      "filtro_ok": true
+    }
+  ],
+  "dispositivos": [
+    {
+      "dispositivo": "iPhone SE",
+      "viewport": "320x568",
+      "sin_scroll": true,
+      "tactil_ok": true
+    },
+    {
+      "dispositivo": "iPhone 13",
+      "viewport": "390x664",
+      "sin_scroll": true,
+      "tactil_ok": true
+    },
+    {
+      "dispositivo": "Pixel 7",
+      "viewport": "412x839",
+      "sin_scroll": true,
+      "tactil_ok": true
+    },
+    {
+      "dispositivo": "Galaxy S9+",
+      "viewport": "320x658",
+      "sin_scroll": true,
+      "tactil_ok": true
+    },
+    {
+      "dispositivo": "iPad (gen 7)",
+      "viewport": "810x1080",
+      "sin_scroll": true,
+      "tactil_ok": true
+    },
+    {
+      "dispositivo": "iPad Pro 11 landscape",
+      "viewport": "1194x834",
+      "sin_scroll": true,
+      "tactil_ok": true
+    }
+  ]
+}
