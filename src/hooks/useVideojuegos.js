@@ -7,6 +7,8 @@ import { obtenerVideojuegos, urlPideError } from '../services/videojuegosService
  * - useState guarda la lista, el estado de carga y el posible error.
  * - useEffect pide los datos al servicio al montar el componente (y cada vez
  *   que se pide recargar), y cancela la petición si se desmonta antes.
+ * - agregar / eliminar modifican la lista en el estado: React vuelve a
+ *   renderizar automáticamente las tarjetas afectadas.
  */
 function useVideojuegos() {
   const [videojuegos, setVideojuegos] = useState([])
@@ -41,7 +43,20 @@ function useVideojuegos() {
   /** Vuelve a cargar el catálogo original (deshace agregados y eliminados). */
   const recargar = useCallback(() => setIntento((n) => n + 1), [])
 
-  return { videojuegos, cargando, error, recargar }
+  /** Agrega un videojuego al inicio de la lista con un id nuevo. */
+  const agregar = useCallback((datos) => {
+    setVideojuegos((lista) => {
+      const siguienteId = lista.reduce((maximo, juego) => Math.max(maximo, juego.id), 0) + 1
+      return [{ ...datos, id: siguienteId, nuevo: true }, ...lista]
+    })
+  }, [])
+
+  /** Elimina un videojuego de la lista según su id. */
+  const eliminar = useCallback((id) => {
+    setVideojuegos((lista) => lista.filter((juego) => juego.id !== id))
+  }, [])
+
+  return { videojuegos, cargando, error, recargar, agregar, eliminar }
 }
 
 export default useVideojuegos

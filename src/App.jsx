@@ -17,11 +17,12 @@ import { irASeccion } from './utils/dom.js'
  *   videojuegos (useVideojuegos) -> Navbar (total), Hero (resumen), Catalogo (tarjetas)
  *   categoriaActiva, busqueda     -> Hero (atajos de categoría) y Catalogo (filtros + lista)
  *
- * Por eso un cambio en una sección se refleja en las demás: al elegir una
- * categoría en inicio o en los filtros, se actualiza la lista del catálogo.
+ * Por eso un cambio en una sección se refleja en las demás: al filtrar se
+ * actualiza la lista; al agregar o eliminar un juego cambian el contador de la
+ * barra de navegación, el resumen de inicio y los filtros.
  */
 function App() {
-  const { videojuegos, cargando, error, recargar } = useVideojuegos()
+  const { videojuegos, cargando, error, recargar, agregar, eliminar } = useVideojuegos()
   const [categoriaActiva, setCategoriaActiva] = useState('Todas')
   const [busqueda, setBusqueda] = useState('')
 
@@ -62,6 +63,20 @@ function App() {
     irASeccion('catalogo')
   }
 
+  /** Agrega un juego y limpia los filtros para que el nuevo quede visible. */
+  function manejarAgregar(datos) {
+    agregar(datos)
+    setCategoriaActiva('Todas')
+    setBusqueda('')
+  }
+
+  /** Restaura el catálogo original y limpia los filtros. */
+  function manejarRestablecer() {
+    recargar()
+    setCategoriaActiva('Todas')
+    setBusqueda('')
+  }
+
   return (
     <>
       <Navbar seccionActiva="inicio" totalVideojuegos={videojuegos.length} cargando={cargando} />
@@ -80,6 +95,9 @@ function App() {
           cargando={cargando}
           error={error}
           onReintentar={recargar}
+          onAgregar={manejarAgregar}
+          onEliminar={eliminar}
+          onRestablecer={manejarRestablecer}
         />
 
         <section id="contacto" className="seccion py-5">

@@ -1,17 +1,24 @@
+import { useEffect, useState } from 'react'
 import FiltroCategorias from './FiltroCategorias.jsx'
 import ListaVideojuegos from './ListaVideojuegos.jsx'
 import EsqueletoCatalogo from './EsqueletoCatalogo.jsx'
+import FormularioVideojuego from './FormularioVideojuego.jsx'
 import { pluralizar } from '../../utils/formato.js'
+
+const DURACION_AVISO_MS = 4000
 
 /**
  * Catalogo — sección del catálogo (<section id="catalogo">).
  *
  * Orquesta los componentes del catálogo y les pasa por props lo que necesitan:
- *   FiltroCategorias <- categorias, categoriaActiva, onCambiarCategoria
- *   ListaVideojuegos <- videojuegosFiltrados
+ *   FiltroCategorias  <- categorias, categoriaActiva, onCambiarCategoria
+ *   ListaVideojuegos  <- videojuegosFiltrados, modoAdmin, onEliminar, onConsultar
+ *   FormularioVideojuego <- videojuegos (para validar), onAgregar
  *
- * El estado de los filtros vive en App: así otras secciones (por ejemplo los
- * atajos de inicio) también pueden cambiar la categoría.
+ * Estado LOCAL (solo le importa a esta sección):
+ *   modoAdmin       -> muestra el formulario para agregar y los botones Eliminar
+ *   formularioVisible
+ *   aviso           -> mensaje temporal "Se agregó / Se eliminó ..."
  */
 function Catalogo({
   videojuegos,
@@ -24,7 +31,39 @@ function Catalogo({
   cargando,
   error,
   onReintentar,
+  onAgregar,
+  onEliminar,
+  onRestablecer,
+  onConsultar,
 }) {
+  const [modoAdmin, setModoAdmin] = useState(false)
+  const [formularioVisible, setFormularioVisible] = useState(true)
+  const [aviso, setAviso] = useState(null)
+
+  // Efecto: el aviso desaparece solo después de unos segundos.
+  // La limpieza cancela el temporizador si llega otro aviso antes.
+  useEffect(() => {
+    if (!aviso) return undefined
+    const temporizador = setTimeout(() => setAviso(null), DURACION_AVISO_MS)
+    return () => clearTimeout(temporizador)
+  }, [aviso])
+
+  function manejarAgregar(datos) {
+    onAgregar(datos)
+    setAviso({ tipo: 'success', texto: `Se agregó "${datos.nombre}" al catálogo.` })
+  }
+
+  function manejarEliminar(id) {
+    const juego = videojuegos.find((item) => item.id === id)
+    onEliminar(id)
+    setAviso({ tipo: 'warning', texto: `Se eliminó "${juego?.nombre}" del catálogo.` })
+  }
+
+  function manejarRestablecer() {
+    onRestablecer()
+    setAviso({ tipo: 'info', texto: 'Se restableció el catálogo original.' })
+  }
+
   function limpiarFiltros() {
     onCambiarCategoria('Todas')
     onCambiarBusqueda('')
@@ -48,6 +87,17 @@ function Catalogo({
       )
     }
 
+    if (videojuegos.length === 0) {
+      return (
+        <div className="estado-vacio" data-testid="catalogo-vacio">
+          <p className="mb-3">No quedan videojuegos en el catálogo.</p>
+          <button type="button" className="btn btn-warning" onClick={manejarRestablecer}>
+            Restablecer catálogo
+          </button>
+        </div>
+      )
+    }
+
     if (videojuegosFiltrados.length === 0) {
       return (
         <div className="estado-vacio" data-testid="sin-resultados">
@@ -63,7 +113,14 @@ function Catalogo({
       )
     }
 
-    return <ListaVideojuegos videojuegos={videojuegosFiltrados} />
+    return (
+      <ListaVideojuegos
+        videojuegos={videojuegosFiltrados}
+        modoAdmin={modoAdmin}
+        onEliminar={manejarEliminar}
+        onConsultar={onConsultar}
+      />
+    )
   }
 
   const deshabilitado = cargando || Boolean(error)
@@ -71,18 +128,67 @@ function Catalogo({
   return (
     <section id="catalogo" className="seccion py-5" aria-labelledby="tituloCatalogo">
       <div className="container">
-        <div className="mb-4">
-          <h2 id="tituloCatalogo" className="mb-1">
-            Catálogo de videojuegos
-          </h2>
-          <p className="text-body-secondary mb-0" aria-live="polite" data-testid="contador-catalogo">
-            {cargando
-              ? 'Cargando catálogo...'
-              : error
-                ? 'Catálogo no disponible'
-                : `Mostrando ${videojuegosFiltrados.length} de ${pluralizar(videojuegos.length, 'videojuego')}`}
-          </p>
+        <div className="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+          <div>
+            <h2 id="tituloCatalogo" className="mb-1">
+              Catálogo de videojuegos
+            </h2>
+            <p className="text-body-secondary mb-0" aria-live="polite" data-testid="contador-catalogo">
+              {cargando
+                ? 'Cargando catálogo...'
+                : error
+                  ? 'Catálogo no disponible'
+                  : `Mostrando ${videojuegosFiltrados.length} de ${pluralizar(videojuegos.length, 'videojuego')}`}
+            </p>
+          </div>
+
+          {/* Interruptor de Bootstrap (form-switch) para el modo administrador */}
+          <div className="form-check form-switch mb-0">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              role="switch"
+              id="modoAdmin"
+              checked={modoAdmin}
+              onChange={(evento) => {
+                setModoAdmin(evento.target.checked)
+                setFormularioVisible(true)
+              }}
+              disabled={deshabilitado}
+            />
+            <label className="form-check-label" htmlFor="modoAdmin">
+              Modo administrador
+            </label>
+          </div>
         </div>
+
+        {/* Aviso temporal (aria-live para que los lectores de pantalla lo anuncien) */}
+        <div aria-live="polite">
+          {aviso && (
+            <div className={`alert alert-${aviso.tipo} py-2`} data-testid="aviso-catalogo">
+              {aviso.texto}
+            </div>
+          )}
+        </div>
+
+        {/* Herramientas de administración: solo en modo administrador */}
+        {modoAdmin && !deshabilitado && (
+          <>
+            <div className="d-flex flex-wrap gap-2 mb-3">
+              {!formularioVisible && (
+                <button type="button" className="btn btn-success" onClick={() => setFormularioVisible(true)}>
+                  + Agregar videojuego
+                </button>
+              )}
+              <button type="button" className="btn btn-outline-light" onClick={manejarRestablecer} data-testid="restablecer">
+                Restablecer catálogo original
+              </button>
+            </div>
+            {formularioVisible && (
+              <FormularioVideojuego existentes={videojuegos} onAgregar={manejarAgregar} onCerrar={() => setFormularioVisible(false)} />
+            )}
+          </>
+        )}
 
         {/* Barra de filtros: categoría + búsqueda por nombre */}
         <div className="barra-filtros mb-4">
