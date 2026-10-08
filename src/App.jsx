@@ -3,6 +3,7 @@ import Navbar from './components/layout/Navbar.jsx'
 import Footer from './components/layout/Footer.jsx'
 import Hero from './components/inicio/Hero.jsx'
 import Catalogo from './components/catalogo/Catalogo.jsx'
+import Contacto from './components/contacto/Contacto.jsx'
 import useVideojuegos from './hooks/useVideojuegos.js'
 import { CATEGORIAS } from './data/videojuegos.js'
 import { normalizarTexto } from './utils/formato.js'
@@ -100,12 +101,7 @@ function App() {
           onRestablecer={manejarRestablecer}
         />
 
-        <section id="contacto" className="seccion py-5">
-          <div className="container">
-            <h2>Contacto</h2>
-            <p className="text-body-secondary">Sección en construcción.</p>
-          </div>
-        </section>
+        <Contacto />
       </main>
 
       <Footer />

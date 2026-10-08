@@ -21,6 +21,40 @@ export const LIMITES = {
   descripcionMax: 160,
 }
 
+/** Valida el formulario de contacto: nombre, email y mensaje. */
+export function validarContacto({ nombre, email, mensaje }) {
+  const errores = {}
+
+  const nombreLimpio = nombre.trim()
+  if (!nombreLimpio) {
+    errores.nombre = 'Ingresa tu nombre.'
+  } else if (nombreLimpio.length < LIMITES.nombreMin) {
+    errores.nombre = `El nombre debe tener al menos ${LIMITES.nombreMin} caracteres.`
+  } else if (nombreLimpio.length > LIMITES.nombreMax) {
+    errores.nombre = `El nombre no puede superar los ${LIMITES.nombreMax} caracteres.`
+  } else if (!REGEX_SOLO_LETRAS.test(nombreLimpio)) {
+    errores.nombre = 'El nombre solo puede contener letras y espacios.'
+  }
+
+  const emailLimpio = email.trim()
+  if (!emailLimpio) {
+    errores.email = 'Ingresa tu correo electrónico.'
+  } else if (!REGEX_EMAIL.test(emailLimpio)) {
+    errores.email = 'Ingresa un correo válido, por ejemplo nombre@dominio.cl.'
+  }
+
+  const mensajeLimpio = mensaje.trim()
+  if (!mensajeLimpio) {
+    errores.mensaje = 'Escribe tu mensaje.'
+  } else if (mensajeLimpio.length < LIMITES.mensajeMin) {
+    errores.mensaje = `El mensaje debe tener al menos ${LIMITES.mensajeMin} caracteres (llevas ${mensajeLimpio.length}).`
+  } else if (mensajeLimpio.length > LIMITES.mensajeMax) {
+    errores.mensaje = `El mensaje no puede superar los ${LIMITES.mensajeMax} caracteres.`
+  }
+
+  return errores
+}
+
 /** true si el texto es una URL http(s) válida o una ruta local a una imagen. */
 function esImagenValida(texto) {
   if (/^img\/[\w-]+\.(jpe?g|png|webp|gif)$/i.test(texto)) return true
