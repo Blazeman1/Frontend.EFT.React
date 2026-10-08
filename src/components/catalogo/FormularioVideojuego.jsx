@@ -136,7 +136,8 @@ function FormularioVideojuego({ existentes, onAgregar, onCerrar }) {
                 categoria: valores.categoria,
                 precio: Number(valores.precio) || 0,
                 descripcion: valores.descripcion.trim(),
-                imagen: valores.imagen.trim(),
+                // Solo se intenta cargar la URL si ya es válida (evita pedir rutas a medio escribir).
+                imagen: errores.imagen ? '' : valores.imagen.trim(),
               }}
             />
           </div>

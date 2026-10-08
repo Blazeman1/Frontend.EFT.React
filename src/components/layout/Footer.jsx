@@ -15,7 +15,7 @@ function Footer() {
               Tienda online de videojuegos. Proyecto académico de Desarrollo Frontend I (PFY2201) — Duoc UC.
             </p>
           </div>
-          <div className="col-6 col-md-3">
+          <div className="col-12 col-sm-6 col-md-3">
             <h2 className="h6 text-uppercase">Secciones</h2>
             <ul className="list-unstyled mb-0">
               <li><a className="link-light link-underline-opacity-0" href="#inicio">Inicio</a></li>
@@ -23,7 +23,7 @@ function Footer() {
               <li><a className="link-light link-underline-opacity-0" href="#contacto">Contacto</a></li>
             </ul>
           </div>
-          <div className="col-6 col-md-4">
+          <div className="col-12 col-sm-6 col-md-4">
             <h2 className="h6 text-uppercase">Contacto</h2>
             <address className="text-body-secondary mb-0">
               contacto@gamezone.cl

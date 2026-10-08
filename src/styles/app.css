@@ -30,6 +30,16 @@ body {
   background-color: var(--gz-fondo);
 }
 
+.saltar-contenido {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  padding: 0.5rem 1rem;
+  background: var(--gz-acento);
+  color: #000;
+}
+
 /* ---------- Navbar ---------- */
 .bg-gz {
   background: linear-gradient(90deg, var(--gz-primario-oscuro), var(--gz-primario));
@@ -75,12 +85,12 @@ body {
   flex-wrap: wrap;
   gap: 1rem;
   margin: 0;
-  flex: 1 1 40%;
+  flex: 1 1 45%;
   align-content: center;
 }
 
 .hero-dato {
-  flex: 1 1 140px;
+  flex: 1 1 120px;
   padding: 1rem 1.25rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 1rem;
@@ -239,4 +249,10 @@ body {
 .pie-pagina {
   background-color: #0e0f13;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Correos y direcciones largas no deben desbordar en pantallas muy angostas (320 px) */
+address,
+.lista-contacto li span {
+  overflow-wrap: anywhere;
 }

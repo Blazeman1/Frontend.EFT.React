@@ -95,6 +95,10 @@ function App() {
 
   return (
     <>
+      <a className="visually-hidden-focusable saltar-contenido" href="#contenido">
+        Saltar al contenido principal
+      </a>
+
       <Navbar seccionActiva={seccionActiva} totalVideojuegos={videojuegos.length} cargando={cargando} />
 
       <main id="contenido">
