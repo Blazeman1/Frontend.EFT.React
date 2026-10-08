@@ -5,9 +5,14 @@ import Hero from './components/inicio/Hero.jsx'
 import Catalogo from './components/catalogo/Catalogo.jsx'
 import Contacto from './components/contacto/Contacto.jsx'
 import useVideojuegos from './hooks/useVideojuegos.js'
+import useSeccionActiva from './hooks/useSeccionActiva.js'
 import { CATEGORIAS } from './data/videojuegos.js'
 import { normalizarTexto } from './utils/formato.js'
 import { irASeccion } from './utils/dom.js'
+
+// ids de las secciones de la página (constante fuera del componente para que
+// useSeccionActiva reciba siempre el mismo arreglo).
+const SECCIONES = ['inicio', 'catalogo', 'contacto']
 
 /**
  * App — componente raíz de GameZone.
@@ -29,6 +34,7 @@ function App() {
   const [categoriaActiva, setCategoriaActiva] = useState('Todas')
   const [busqueda, setBusqueda] = useState('')
   const [juegoConsultado, setJuegoConsultado] = useState(null)
+  const seccionActiva = useSeccionActiva(SECCIONES)
 
   // Cantidad de videojuegos por categoría (para los botones de filtro).
   const categorias = useMemo(
@@ -89,7 +95,7 @@ function App() {
 
   return (
     <>
-      <Navbar seccionActiva="inicio" totalVideojuegos={videojuegos.length} cargando={cargando} />
+      <Navbar seccionActiva={seccionActiva} totalVideojuegos={videojuegos.length} cargando={cargando} />
 
       <main id="contenido">
         <Hero resumen={resumen} cargando={cargando} categorias={categorias} onExplorarCategoria={explorarCategoria} />
