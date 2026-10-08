@@ -1,0 +1,21 @@
+{
+  "name": "gamezone-eft",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "GameZone - Evaluación Final Transversal PFY2201: tienda de videojuegos con HTML5, CSS3, JavaScript, Bootstrap 5 y React.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}

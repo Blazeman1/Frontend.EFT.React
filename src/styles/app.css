@@ -1,0 +1,17 @@
+/* =====================================================================
+   GameZone — Estilos propios (EFT PFY2201)
+   Se cargan DESPUÉS de Bootstrap 5 (ver main.jsx) para personalizarlo.
+   ===================================================================== */
+
+/* ---------- Variables de marca ---------- */
+:root {
+  --gz-primario: #6f1ab8;
+  --gz-primario-oscuro: #4b0f80;
+  --gz-acento: #ffc107;
+  --gz-fondo: #14161b;
+  --gz-superficie: #1d2027;
+}
+
+body {
+  background-color: var(--gz-fondo);
+}
