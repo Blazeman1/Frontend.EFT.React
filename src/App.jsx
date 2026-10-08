@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import Navbar from './components/layout/Navbar.jsx'
 import Footer from './components/layout/Footer.jsx'
 import Hero from './components/inicio/Hero.jsx'
+import Catalogo from './components/catalogo/Catalogo.jsx'
 import useVideojuegos from './hooks/useVideojuegos.js'
 import { CATEGORIAS } from './data/videojuegos.js'
 import { irASeccion } from './utils/dom.js'
@@ -9,11 +10,11 @@ import { irASeccion } from './utils/dom.js'
 /**
  * App — componente raíz de GameZone.
  *
- * La lista de videojuegos ahora es ESTADO de React (hook useVideojuegos) y se
- * carga de forma asíncrona desde el servicio, igual que desde una API.
+ * La lista de videojuegos (estado del hook useVideojuegos) baja por props a
+ * Navbar, Hero y Catalogo, que genera una tarjeta por cada juego.
  */
 function App() {
-  const { videojuegos, cargando, error } = useVideojuegos()
+  const { videojuegos, cargando, error, recargar } = useVideojuegos()
 
   const categorias = useMemo(
     () =>
@@ -40,14 +41,7 @@ function App() {
       <main id="contenido">
         <Hero resumen={resumen} cargando={cargando} categorias={categorias} onExplorarCategoria={() => irASeccion('catalogo')} />
 
-        <section id="catalogo" className="seccion py-5">
-          <div className="container">
-            <h2>Catálogo de videojuegos</h2>
-            <p className="text-body-secondary">
-              {cargando ? 'Cargando videojuegos...' : error ? error : `${videojuegos.length} videojuegos cargados.`}
-            </p>
-          </div>
-        </section>
+        <Catalogo videojuegos={videojuegos} cargando={cargando} error={error} onReintentar={recargar} />
 
         <section id="contacto" className="seccion py-5">
           <div className="container">
