@@ -271,9 +271,9 @@ python pruebas/verificar_sitio.py http://localhost:4173/   # en otra terminal
 | Navegador | Cómo se verificó | Resultado |
 |---|---|---|
 | Google Chrome / Chromium | Pruebas automatizadas (72 verificaciones) | Correcto |
-| Microsoft Edge (Windows) | Revisión manual | Pendiente |
-| Mozilla Firefox (Windows) | Revisión manual | Pendiente |
-| Navegador del teléfono (Android o iPhone) | Revisión manual en el sitio publicado | Pendiente |
+| Microsoft Edge (Windows) | Revisión manual | Correcto |
+| Mozilla Firefox (Windows) | Revisión manual | Correcto |
+| Navegador del teléfono (Android o iPhone) | Revisión manual en el sitio publicado | Correcto |
 
 **Revisión manual (cada navegador):** abrir el sitio publicado, filtrar por una categoría, buscar un nombre, activar el modo administrador, agregar y eliminar un juego, usar "Consultar disponibilidad", enviar el formulario de contacto vacío y luego con datos válidos, y revisar que la consola (F12) no muestre errores. Al terminar, reemplazar "Pendiente" por "Correcto" o anotar lo encontrado.
 
