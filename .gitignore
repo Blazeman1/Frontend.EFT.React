@@ -1,0 +1,10 @@
+# Dependencias y build (se regeneran con npm install / npm run build)
+node_modules/
+dist/
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.local
